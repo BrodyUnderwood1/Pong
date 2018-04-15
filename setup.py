@@ -4,8 +4,6 @@
 SCORE1 = "Player 1: "
 SCORE2 = "Player 2: "
 #colors
-BC1 = ( 0, 192, 255 )
-BC2 = ( 255, 63, 0 )
 BLACK = ( 0, 0, 0)
 WHITE = (255, 255, 255)
 RED = ( 255, 0, 0 )

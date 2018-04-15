@@ -8,6 +8,7 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SIZE)
 background_top = pygame.image.load(BTI).convert()
 background_bot = pygame.image.load(BBI).convert()
+
 # Select the font to use, size, bold, italics
 font = pygame.font.SysFont('Calibri', 25, True, False)
 players_list = pygame.sprite.Group()
