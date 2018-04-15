@@ -1,5 +1,6 @@
 import pygame
 from setup import *
+import math
 
 pygame.init()
 
@@ -7,6 +8,7 @@ clock = pygame.time.Clock()
 screen = pygame.display.set_mode(SIZE)
 background_top = pygame.image.load(BTI).convert()
 background_bot = pygame.image.load(BBI).convert()
+
 
 while not done:
 	for event in pygame.event.get():
