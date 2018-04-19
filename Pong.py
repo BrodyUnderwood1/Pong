@@ -38,8 +38,7 @@ class Ball(pygame.sprite.Sprite):
 			self.x_vel-=.01
 		self.rect.x+=self.x_vel
 
-		if (abs(self.y_vel)>=10):
-			self.y_vel
+		
 		self.rect.y+=self.y_vel
 
 		if (self.rect.y>=500):
