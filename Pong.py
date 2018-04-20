@@ -2,6 +2,7 @@ import pygame
 from setup import *
 import math
 from random import randint
+import serial
 
 pygame.init()
 
@@ -15,6 +16,7 @@ font = pygame.font.SysFont('Calibri', 25, True, False)
 players_list = pygame.sprite.Group()
 all_sprites_list = pygame.sprite.Group()
 
+
 #Pong ball class
 class Ball(pygame.sprite.Sprite):
 	
@@ -23,6 +25,8 @@ class Ball(pygame.sprite.Sprite):
 		self.image = pygame.image.load(BI).convert()
 		self.image.set_colorkey(WHITE)
 		self.rect = self.image.get_rect()
+		self.rect.x = 345
+		self.rect.y = 295
 		self.x_vel = 0
 		while(self.x_vel==0):
 			self.x_vel=randint(-1,1)
@@ -41,12 +45,12 @@ class Ball(pygame.sprite.Sprite):
 		
 		self.rect.y+=self.y_vel
 
-		if (self.rect.y>=500):
+		if (self.rect.y>=502):
 			self.y_vel = -self.y_vel
-			self.rect.y=500
-		if (self.rect.y<=90):
+			self.rect.y=502
+		if (self.rect.y<=88):
 			self.y_vel = -self.y_vel
-			self.rect.y=90
+			self.rect.y=88
 
 	def reset(self):
 		
@@ -54,8 +58,8 @@ class Ball(pygame.sprite.Sprite):
 		while(self.x_vel==0):
 			self.x_vel = randint(-1,1)
 		self.y_vel = 0
-		while(self.y_vel==0):
-			self.y_vel=randint(-1,1)
+		#while(self.y_vel==0):
+		#	self.y_vel=randint(-1,1)
 		self.rect.x = 345
 		self.rect.y = 295
 
@@ -92,11 +96,12 @@ players_list.add(p2)
 all_sprites_list.add(p2)
 
 ball = Ball()
-ball.rect.x = 345
-ball.rect.y = 295
+
 all_sprites_list.add(ball)
 
 theta = 0
+
+
 
 def drawBackground():
 	screen.fill(WHITE)
@@ -119,21 +124,25 @@ def checkScore(pos):
 	else:
 		return
 
-oneHit = False
+ser1 = serial.Serial()
+ser1.port = 'COM3'
+ser1.timeout = None
+
+print("Enters Serial Function")
+
 while not done:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			done = True
-	if not oneHit:	
-		p1.rect.y = 250 - math.sin(theta)*150
-		p2.rect.y = 250 + math.sin(theta)*160
-	else:
-		p1.rect.y = (ball.rect.y-20)
-		p2.rect.y = (ball.rect.y-20)
+	ser1.open()
+	p1.rect.y=int(ser1.read(3))
+	print(str(p1.rect.y))
+	ser1.reset_input_buffer()
+	ser1.close()
+
 	p1.getVel()
 	p2.getVel()
-	if (p1.y_vel==0):
-		oneHit=False
+	
 	ball.updt()
 	checkScore(ball.rect.x)
 	blocks_hit_list = pygame.sprite.spritecollide(ball, players_list, False)
@@ -143,19 +152,17 @@ while not done:
 		if(ball.rect.x <350):
 			ball.rect.x = 40
 		else:
-			ball.rect.x = 630
+			ball.rect.x = 620
 
 		if((ball.y_vel<=8) and (ball.y_vel>=-8)):
 			ball.y_vel+=blocks_hit_list[0].y_vel
 
-		oneHit = True
 
 	drawBackground()
 	drawScores()
 	all_sprites_list.draw(screen)
 	pygame.display.flip()
 	clock.tick(60)
-	theta+=.01
 
 
 pygame.quit()
