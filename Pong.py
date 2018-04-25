@@ -31,9 +31,11 @@ class Ball(pygame.sprite.Sprite):
 		self.x_vel = 0
 		while(self.x_vel==0):
 			self.x_vel=randint(-1,1)
+			self.x_vel=self.x_vel*3
 		self.y_vel = 0
 		while(self.y_vel==0):
 			self.y_vel=randint(-1,1)
+			self.y_vel=self.y_vel*3
 	def updt(self):
 		if (abs(self.x_vel)>=8):
 			self.x_vel=self.x_vel
@@ -58,6 +60,7 @@ class Ball(pygame.sprite.Sprite):
 		self.x_vel = 0
 		while(self.x_vel==0):
 			self.x_vel = randint(-1,1)
+		self.x_vel=self.x_vel*3
 		self.y_vel = 0
 		#while(self.y_vel==0):
 		#	self.y_vel=randint(-1,1)
@@ -118,7 +121,7 @@ def checkScore(pos):
 
 
 ser1 = serial.Serial()
-ser1.port = 'COM4'
+ser1.port = 'COM6'
 ser1.timeout = None
 
 
@@ -132,6 +135,7 @@ while not done:
 	ser1.reset_input_buffer()
 	ser1.close()
 	
+	p2.rect.y=ball.rect.y-20
 	p1.getVel()
 	p2.getVel()
 	
