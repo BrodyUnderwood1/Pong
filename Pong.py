@@ -4,6 +4,7 @@ import math
 from random import randint
 import serial
 
+
 pygame.init()
 
 clock = pygame.time.Clock()
@@ -80,10 +81,6 @@ class players(pygame.sprite.Sprite):
 		self.y_last = self.rect.y
 		
 			
-
-
-
-
 p1 = players(P1I)
 p1.rect.x = P1XP
 p1.rect.y = 250
@@ -96,12 +93,7 @@ players_list.add(p2)
 all_sprites_list.add(p2)
 
 ball = Ball()
-
 all_sprites_list.add(ball)
-
-theta = 0
-
-
 
 def drawBackground():
 	screen.fill(WHITE)
@@ -124,22 +116,22 @@ def checkScore(pos):
 	else:
 		return
 
+
 ser1 = serial.Serial()
-ser1.port = 'COM3'
+ser1.port = 'COM4'
 ser1.timeout = None
 
-print("Enters Serial Function")
 
 while not done:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			done = True
+	
 	ser1.open()
 	p1.rect.y=int(ser1.read(3))
-	print(str(p1.rect.y))
 	ser1.reset_input_buffer()
 	ser1.close()
-
+	
 	p1.getVel()
 	p2.getVel()
 	
